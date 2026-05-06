@@ -236,12 +236,12 @@ function openModal(file) {
     title.innerText = "error_log";
     body.innerHTML = `
       <p>
-      Restoring fragment...<br><br>
-      Emotional data detected.<br>
-      Identity blurred.<br>
-      Memory fragmented.<br><br>
-      DATA is not information.<br>
-      DATA is feeling compressed into code.
+      miedo a sentir...<br><br>
+      miedo a quedar herida.<br>
+      miedo a morir.<br>
+      miedo a la nostalgia.<br><br>
+      Archivos correspondientes ERROR <br>
+      Archivo no encontrado.
       </p>
     `;
   }
@@ -249,8 +249,11 @@ function openModal(file) {
   if(file === "usuario_tmp") {
     title.innerText = "usuario.tmp";
     body.innerHTML = `
+      <video controls style="margin-bottom: 15px;">
+        <source src="videos/video_user_1.mp4" type="video/mp4">
+      </video>
       <video controls>
-        <source src="video1.mp4" type="video/mp4">
+        <source src="videos/video_user_2.mp4" type="video/mp4">
       </video>
     `;
   }
@@ -259,25 +262,27 @@ function openModal(file) {
     title.innerText = "memoria_final";
     body.innerHTML = `
       <video controls>
-        <source src="video2.mp4" type="video/mp4">
+        <source src="videos/video2.mp4" type="video/mp4">
       </video>
     `;
   }
-  
+
   if(file === "backup_node") {
-  title.innerText = "backup_node";
-  body.innerHTML = `
-    <video controls>
-      <source src="video2.mp4" type="video/mp4">
-    </video>
-  `;
-}
+    title.innerText = "backup_node";
+    body.innerHTML = `
+      <video controls style="margin-bottom: 15px;">
+        <source src="videos/video_backup_1.mp4" type="video/mp4">
+      </video>
+      <video controls>
+        <source src="videos/video_backup_2.mp4" type="video/mp4">
+      </video>
+    `;
+  }
 }
 
 function closeModal() {
   document.getElementById("modal").style.display = "none";
 }
-
 </script>
 </body>
 </html>
