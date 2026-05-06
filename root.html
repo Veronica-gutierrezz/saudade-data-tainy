@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DATA - Root Access</title>
+
+<style>
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #050816;
+  font-family: 'Courier New', monospace;
+  color: #00eaff;
+  overflow: hidden;
+
+  background-image:
+    linear-gradient(rgba(0,234,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,234,255,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+
+  animation: fadeIn 1.2s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.container {
+  padding: 60px;
+}
+
+.system-header {
+  font-size: 12px;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  margin-bottom: 50px;
+  color: #89f7ff;
+}
+
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 50px;
+}
+
+.folder {
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.folder-icon {
+  width: 80px;
+  height: 60px;
+  margin: 0 auto;
+  border: 1px solid #00eaff;
+  border-radius: 6px;
+  position: relative;
+  background: rgba(0, 234, 255, 0.05);
+  box-shadow: 0 0 10px rgba(0, 234, 255, 0.2);
+}
+
+.folder-icon::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  width: 30px;
+  height: 10px;
+  border: 1px solid #00eaff;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  background: rgba(0, 234, 255, 0.05);
+}
+
+.folder p {
+  margin-top: 12px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #ffb6c1;
+}
+
+.folder:hover {
+  transform: scale(1.08);
+}
+
+.folder:hover .folder-icon {
+  box-shadow: 0 0 25px rgba(0, 234, 255, 0.6);
+}
+
+.locked p {
+  color: #ff6f91;
+  opacity: 0.7;
+}
+
+/* ================= MODAL ================= */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 8, 22, 0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: rgba(0, 234, 255, 0.05);
+  border: 1px solid #00eaff;
+  padding: 30px;
+  box-shadow: 0 0 30px rgba(0, 234, 255, 0.5);
+  animation: scaleIn 0.4s ease forwards;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 20px;
+  color: #89f7ff;
+}
+
+.close-btn {
+  cursor: pointer;
+  color: #ff6f91;
+}
+
+.modal-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #ffb6c1;
+}
+
+.modal-text img {
+  width: 100%;
+  margin-bottom: 15px;
+  border: 1px solid #00eaff;
+}
+
+.modal-text video {
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid #ffb6c1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="system-header">
+    data_os v1.03 <br>
+    user: unknown <br>
+    access_level: partial <br>
+    last_login: 29.06.23
+  </div>
+
+  <div class="folder-grid">
+
+    <div class="folder" onclick="openModal('memoria_01')">
+      <div class="folder-icon"></div>
+      <p>memoria_01</p>
+    </div>
+
+    <div class="folder" onclick="openModal('error_log')">
+      <div class="folder-icon"></div>
+      <p>error_log</p>
+    </div>
+
+    <div class="folder" onclick="openModal('usuario_tmp')">
+      <div class="folder-icon"></div>
+      <p>usuario.tmp</p>
+    </div>
+
+    <div class="folder locked" onclick="openModal('memoria_final')">
+      <div class="folder-icon"></div>
+      <p>memoria_final.locked</p>
+    </div>
+	
+	<div class="folder" onclick="openModal('backup_node')">
+  <div class="folder-icon"></div>
+  <p>backup_node</p>
+</div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span id="modal-title">archivo</span>
+      <span class="close-btn" onclick="closeModal()">[x]</span>
+    </div>
+    <div class="modal-text" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+
+function openModal(file) {
+  const modal = document.getElementById("modal");
+  const title = document.getElementById("modal-title");
+  const body = document.getElementById("modal-body");
+
+  modal.style.display = "flex";
+
+  if(file === "memoria_01") {
+    title.innerText = "memoria_01";
+    body.innerHTML = `
+      <img src="imágenes/img1.jpeg">
+      <img src="imágenes/img2.jpeg">
+      <img src="imágenes/img3.jpeg">
+    `;
+  }
+
+  if(file === "error_log") {
+    title.innerText = "error_log";
+    body.innerHTML = `
+      <p>
+      Restoring fragment...<br><br>
+      Emotional data detected.<br>
+      Identity blurred.<br>
+      Memory fragmented.<br><br>
+      DATA is not information.<br>
+      DATA is feeling compressed into code.
+      </p>
+    `;
+  }
+
+  if(file === "usuario_tmp") {
+    title.innerText = "usuario.tmp";
+    body.innerHTML = `
+      <video controls>
+        <source src="video1.mp4" type="video/mp4">
+      </video>
+    `;
+  }
+
+  if(file === "memoria_final") {
+    title.innerText = "memoria_final";
+    body.innerHTML = `
+      <video controls>
+        <source src="video2.mp4" type="video/mp4">
+      </video>
+    `;
+  }
+  
+  if(file === "backup_node") {
+  title.innerText = "backup_node";
+  body.innerHTML = `
+    <video controls>
+      <source src="video2.mp4" type="video/mp4">
+    </video>
+  `;
+}
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+</script>
+</body>
+</html>
